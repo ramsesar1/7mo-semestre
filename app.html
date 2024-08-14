@@ -28,7 +28,29 @@
 
         ctx.fillRect(260,260,100,100)
 
-        ctx.strokeRect(340,340,100,100)
+        ctx.lineWidth = 4;
+        ctx.strokeStyle ="red"
+        ctx.strokeRect(340,340,100,100);
+
+        ctx.strokeStyle ="purple"
+        ctx.beginPath()
+        ctx.moveTo(250,80);
+        ctx.lineTo(250,180);
+        ctx.closePath();
+        ctx.stroke();
+        
+
+
+        ctx.strokeStyle ="blue"
+        ctx.fillStyle ="red"
+
+        ctx.beginPath();
+        ctx.moveTo(70,300);
+        ctx.lineTo(20,440);
+        ctx.lineTo(220,440);
+        ctx.closePath();
+        ctx.stroke()
+        ctx.fill()
     </script>
 </body>
 
