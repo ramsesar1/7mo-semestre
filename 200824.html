@@ -62,6 +62,14 @@
         ctx.stroke()
         
 
+        var grd = ctx.createLinearGradient(0,0,500,500)
+        grd.addColorStop(0, "purple");
+        grd.addColorStop(0.5, "red");
+        grd.addColorStop(1,"blue");
+
+        ctx.fillStyle=grd;
+        ctx.fillRect(200,200,300,50)
+
     </script>
 
 
