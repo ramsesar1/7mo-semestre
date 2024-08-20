@@ -75,6 +75,13 @@
         ctx.fillRect(200,200,300,50)
       
 
+        var grd2 = ctx.createRadialGradient(450,250,250,300,300,80)
+        grd2.addColorStop(0, "white");
+        grd2.addColorStop(0.5, "red");
+        grd2.addColorStop(1,"green");
+
+        ctx.fillStyle=grd2;
+        ctx.fillRect(250,300,300,300)
     </script>
 </body>
 
