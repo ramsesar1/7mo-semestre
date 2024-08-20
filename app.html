@@ -85,8 +85,10 @@
 
         var imagen = new Image();
         imagen.src = "gato.png";
-        ctx.drawImage(imagen,0,0,80,80) 
 
+        imagen.onload = function(){
+        ctx.drawImage(imagen,0,0,80,80) 
+        }
 
     </script>
 </body>
