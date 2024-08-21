@@ -14,9 +14,42 @@
 
     <canvas id="my_canvas" width="500" height="500"></canvas>
 
+
+
     <script type="text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
+
+        function getRandomColour(){
+            var red = Math.floor(Math.random() * 256);
+            var green = Math.floor(Math.random() * 256);
+            var blue = Math.floor(Math.random() * 256);
+
+            return "rgb("+red+","+green+"," +blue+" )";  
+        }
+
+        my_canvas.addEventListener("click",function(e){
+
+            ctx.beginPath();
+            ctx.arc(e.x,e.y,50,0,2 * Math.PI)
+            ctx.stroke()
+            ctx.fill()
+
+            console.log(e)
+        
+        });
+
+        my_canvas.addEventListener('mouseover', function(e) {
+ //           ctx.fillStyle = getRandomColour(); 
+        });
+
+        my_canvas.addEventListener("mouseout",function(e){
+
+            console.log(e)
+        })
+
+        /*
+
         ctx.strokeRect(20,20,100,100)
 
         ctx.fillStyle ='red'
@@ -89,7 +122,7 @@
         imagen.onload = function(){
         ctx.drawImage(imagen,0,0,80,80) 
         }
-
+        */
     </script>
 </body>
 
