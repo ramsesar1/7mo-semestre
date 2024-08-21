@@ -20,6 +20,10 @@
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
 
+        let figura = 1;
+
+
+
         function getRandomColour(){
             var red = Math.floor(Math.random() * 256);
             var green = Math.floor(Math.random() * 256);
@@ -30,13 +34,14 @@
 
         my_canvas.addEventListener("click",function(e){
 
-            ctx.beginPath();
-            ctx.arc(e.x,e.y,50,0,2 * Math.PI)
-            ctx.stroke()
-            ctx.fill()
-
-            console.log(e)
-        
+            if (figura === 1) {
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, 50, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.stroke();
+            } else if (figura === 2) {
+                ctx.fillRect(e.x - 40, e.y - 40, 80, 80);
+            }
         });
 
         my_canvas.addEventListener('mouseover', function(e) {
@@ -45,6 +50,7 @@
 
         my_canvas.addEventListener("mouseout",function(e){
 
+            figura = (figura === 1)?2:1;
             console.log(e)
         })
 
