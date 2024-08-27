@@ -22,6 +22,7 @@
         const ctxd = my_canvas.getContext('2d')
 
         let figura = 1;
+        let Dibujando = false;
 
 
 
@@ -54,9 +55,11 @@
             figura = (figura === 1)?2:1;
             console.log(e)
         })
+         
+        
 
         my_canvas.addEventListener('mousemove',function(e){
-
+            if (Dibujando){
                 const currentFillStylke = ctx.fillStyle;
 
                 ctx.beginPath();
@@ -67,6 +70,19 @@
 
                 
                 ctx.fillStyle = currentFillStylke
+            
+            }
+        })
+        
+
+
+        my_canvas.addEventListener('mouseup',function(e){
+            Dibujando = false
+        })
+
+        my_canvas.addEventListener('mousedown',function(e){
+            Dibujando = true;
+
         })
 
         /*
