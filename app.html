@@ -26,6 +26,8 @@
 
 
 
+        var s_x = 200 , s_y = 200;
+
         function getRandomColour(){
             var red = Math.floor(Math.random() * 256);
             var green = Math.floor(Math.random() * 256);
@@ -34,6 +36,39 @@
             return "rgb("+red+","+green+"," +blue+" )";  
         }
 
+        document.addEventListener("keypress",function(e){
+
+
+        })
+
+        document.addEventListener("keydown",function(e){
+
+            console.log(e)
+
+
+
+
+            /*
+            let h = Math.random() * 600;
+            let w = Math.random() * 600;
+
+            ctx.fillRect(w,h,40,40)
+            ctx.fillStyle = getRandomColour();
+            console.log(e)
+            ctx.strokeText(e.key,w,h,50,50)
+            */
+
+        })
+
+        document.addEventListener("keyup",function(e){
+            
+        })
+
+
+
+
+
+        /*
         my_canvas.addEventListener("click",function(e){
 
             if (figura === 1) {
