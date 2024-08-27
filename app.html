@@ -26,7 +26,7 @@
 
 
 
-        var s_x = 200 , s_y = 200;
+        var s_y = 200 , s_x = 200;
 
         function getRandomColour(){
             var red = Math.floor(Math.random() * 256);
@@ -42,9 +42,26 @@
         })
 
         document.addEventListener("keydown",function(e){
+        switch(e.keyCode){
+            case 87:
+                    s_x = s_x-10 
+                break;           
+            case 65:
+                      s_y = s_y-10 
+                break;
+            case 83:
+                      s_x = s_x+10 
+                break;
 
+            case 68:
+                      s_y = s_y+10 
+                break;
+        }
             console.log(e)
+            ctx.fillRect(s_y,s_x,40,40)
+            ctx.fillStyle = getRandomColour(); 
 
+        
 
 
 
