@@ -19,6 +19,7 @@
     <script type="text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
+        const ctxd = my_canvas.getContext('2d')
 
         let figura = 1;
 
@@ -52,6 +53,20 @@
 
             figura = (figura === 1)?2:1;
             console.log(e)
+        })
+
+        my_canvas.addEventListener('mousemove',function(e){
+
+                const currentFillStylke = ctx.fillStyle;
+
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, 2, 0, 2 * Math.PI);
+                ctx.fillStyle ='black'
+                ctx.fill();
+                ctx.stroke();
+
+                
+                ctx.fillStyle = currentFillStylke
         })
 
         /*
