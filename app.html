@@ -53,18 +53,30 @@
 
         function update() {
             switch(direction) {
-                case "up":
-                    s_y -= 10;
-                    break;
-                case "down":
-                    s_y += 10;
-                    break;
-                case "left":
-                    s_x -= 10;
-                    break;
-                case "right":
-                    s_x += 10;
-                    break;
+                    case "up":
+                        s_y -= 10;
+                        if (s_y < -40) {
+                            s_y = 500;
+                        }
+                        break;
+                    case "down":
+                        s_y += 10;
+                        if (s_y > 500) {
+                            s_y = -40;
+                        }
+                        break;
+                    case "left":
+                        s_x -= 10;
+                        if (s_x < -40) {
+                            s_x = 500;
+                        }
+                        break;
+                    case "right":
+                        s_x += 10;
+                        if (s_x > 500) {
+                            s_x = -40;
+                        }
+                        break;
             }
 
         }
@@ -79,8 +91,7 @@
 
         pintar();
 
-
-
+/*necesito que si toca una esquina, aparezca de la otra y siga con su recorrido*/
 
     
     /*
