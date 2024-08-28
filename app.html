@@ -17,51 +17,79 @@
 
 
     <script type="text/javascript">
-        const my_canvas = document.getElementById('my_canvas')
-        const ctx = my_canvas.getContext('2d')
-        const ctxd = my_canvas.getContext('2d')
+        const my_canvas = document.getElementById('my_canvas');
+        const ctx = my_canvas.getContext('2d');
 
-        let figura = 1;
-        let Dibujando = false;
+        let direction = "";
 
+        let s_x = 200, s_y = 200;
 
-
-        var s_y = 200 , s_x = 200;
-
-        function getRandomColour(){
-            var red = Math.floor(Math.random() * 256);
-            var green = Math.floor(Math.random() * 256);
-            var blue = Math.floor(Math.random() * 256);
-
-            return "rgb("+red+","+green+"," +blue+" )";  
+        function getRandomColour() {
+            const red = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 256);
+            const blue = Math.floor(Math.random() * 256);
+            return `rgb(${red},${green},${blue})`;
         }
 
-        document.addEventListener("keypress",function(e){
+        document.addEventListener("keydown", function(e) {
+            switch(e.key) {
+                case 'w':
+                    direction = "up";
+                    break;           
+                case 'a':
+                    direction = "left";
+                    break;
+                case 's':
+                    direction = "down";
+                    break;
+                case 'd':
+                    direction = "right";
+                    break;
+                default:
+                    direction = ""; 
+                    break;
+            }
+        });
+
+        function update() {
+            switch(direction) {
+                case "up":
+                    s_y -= 10;
+                    break;
+                case "down":
+                    s_y += 10;
+                    break;
+                case "left":
+                    s_x -= 10;
+                    break;
+                case "right":
+                    s_x += 10;
+                    break;
+            }
+
+        }
+
+        function pintar() {
+            ctx.clearRect(0, 0, my_canvas.width, my_canvas.height);
+            ctx.fillStyle = getRandomColour();
+            ctx.fillRect(s_x, s_y, 40, 40);
+            update();
+            requestAnimationFrame(pintar);
+        }
+
+        pintar();
 
 
+
+
+    
+    /*
+        document.addEventListener("keyup",function(e){
+            
         })
+*/
 
-        document.addEventListener("keydown",function(e){
-        switch(e.keyCode){
-            case 87:
-                    s_x = s_x-10 
-                break;           
-            case 65:
-                      s_y = s_y-10 
-                break;
-            case 83:
-                      s_x = s_x+10 
-                break;
 
-            case 68:
-                      s_y = s_y+10 
-                break;
-        }
-        ctx.clearRect(0, 0, my_canvas.width, my_canvas.height);
-
-            console.log(e)
-            ctx.fillRect(s_y,s_x,40,40)
-            ctx.fillStyle = getRandomColour(); 
 
         
 
@@ -76,16 +104,6 @@
             console.log(e)
             ctx.strokeText(e.key,w,h,50,50)
             */
-
-        })
-
-        document.addEventListener("keyup",function(e){
-            
-        })
-
-
-
-
 
         /*
         my_canvas.addEventListener("click",function(e){
