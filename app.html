@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title></title>
+    <title>lol</title>
     <style>
         canvas {
             background-color: blueviolet;
@@ -14,15 +14,13 @@
 
     <canvas id="my_canvas" width="500" height="500"></canvas>
 
-
-
     <script type="text/javascript">
         const my_canvas = document.getElementById('my_canvas');
         const ctx = my_canvas.getContext('2d');
 
         let direction = "";
-
         let s_x = 200, s_y = 200;
+
 
         function getRandomColour() {
             const red = Math.floor(Math.random() * 256);
@@ -31,11 +29,95 @@
             return `rgb(${red},${green},${blue})`;
         }
 
+        class rectangulo {
+            constructor(x, y, w, h, c, s) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+                this.c = c;
+                this.s = s;
+            }
+
+            draw() {
+                ctx.fillStyle = this.c;
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+            }
+
+            touching(other) {
+                return this.x < other.x + other.w &&
+                       this.x + this.w > other.x &&
+                       this.y < other.y + other.h &&
+                       this.y + this.h > other.y;
+            }
+        }
+
+            let randomRect = new rectangulo(
+            Math.random() * (my_canvas.width - 40),
+            Math.random() * (my_canvas.height - 40),
+            30,
+            30,
+            getRandomColour(),
+            0
+        );
+
+
+        function update() {
+            switch(direction) {
+                case "up":
+                    s_y -= 10;
+                    if (s_y < -40) {
+                        s_y = 500;
+                    }
+                    break;
+                case "down":
+                    s_y += 10;
+                    if (s_y > 500) {
+                        s_y = -40;
+                    }
+                    break;
+                case "left":
+                    s_x -= 10;
+                    if (s_x < -40) {
+                        s_x = 500;
+                    }
+                    break;
+                case "right":
+                    s_x += 10;
+                    if (s_x > 500) {
+                        s_x = -40;
+                    }
+                    break;
+            }
+
+            // colision
+            const movingRect = new rectangulo(s_x, s_y, 40, 40, '', 0);
+
+            if (randomRect.touching(movingRect)) {
+                randomRect.x = Math.random() * (my_canvas.width - 40);
+                randomRect.y = Math.random() * (my_canvas.height - 40);
+            }
+        }
+
+        function pintar() {
+            ctx.clearRect(0, 0, my_canvas.width, my_canvas.height);
+
+            
+            ctx.fillStyle = getRandomColour();
+            ctx.fillRect(s_x, s_y, 40, 40);
+
+
+            randomRect.draw();
+
+            update();
+            requestAnimationFrame(pintar);
+        }
+
         document.addEventListener("keydown", function(e) {
             switch(e.key) {
                 case 'w':
                     direction = "up";
-                    break;           
+                    break;
                 case 'a':
                     direction = "left";
                     break;
@@ -51,47 +133,7 @@
             }
         });
 
-        function update() {
-            switch(direction) {
-                    case "up":
-                        s_y -= 10;
-                        if (s_y < -40) {
-                            s_y = 500;
-                        }
-                        break;
-                    case "down":
-                        s_y += 10;
-                        if (s_y > 500) {
-                            s_y = -40;
-                        }
-                        break;
-                    case "left":
-                        s_x -= 10;
-                        if (s_x < -40) {
-                            s_x = 500;
-                        }
-                        break;
-                    case "right":
-                        s_x += 10;
-                        if (s_x > 500) {
-                            s_x = -40;
-                        }
-                        break;
-            }
-
-        }
-
-        function pintar() {
-            ctx.clearRect(0, 0, my_canvas.width, my_canvas.height);
-            ctx.fillStyle = getRandomColour();
-            ctx.fillRect(s_x, s_y, 40, 40);
-            update();
-            requestAnimationFrame(pintar);
-        }
-
         pintar();
-
-
     
     /*
         document.addEventListener("keyup",function(e){
