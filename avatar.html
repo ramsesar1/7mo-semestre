@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <canvas id="characterCanvas" width="500" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('characterCanvas');
+        const ctx = canvas.getContext('2d');
+
+
+        const GradienteBody = ctx.createLinearGradient(70, 50, 0, 150);
+        GradienteBody.addColorStop(0, '#ff0000'); 
+        GradienteBody.addColorStop(1, '#8b0000'); 
+
+        ctx.fillStyle = GradienteBody;
+        ctx.beginPath();
+        ctx.arc(100, 100, 60, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(70, 170, 30, 50, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(130, 170, 30, 50, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(45, 120, 30, 50, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = GradienteBody;
+        ctx.fillRect(40, 105, 120, 70);
+
+
+
+
+        //visor y logo
+        const img = new Image();
+        img.src = 'cropped-logo-dasc.png';
+        img.onload = () => {
+            const WidthImg = 120;
+            const HeightImg = 40;
+            const imgX = 100 - WidthImg / 2;
+            const imgY = 120 - HeightImg / 2;
+
+            ctx.drawImage(img, imgX, imgY, WidthImg, HeightImg);
+        };
+
+        const GradienteVisor = ctx.createLinearGradient(130, 60, 130, 100);
+        GradienteVisor.addColorStop(0, '#add8e6'); 
+        GradienteVisor.addColorStop(1, '#87ceeb'); 
+
+        ctx.fillStyle = GradienteVisor;
+        ctx.beginPath();
+        ctx.ellipse(130, 80, 30, 20, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+    </script>
+</body>
+</html>
