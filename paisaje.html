@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        canvas {
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="750" height="500"></canvas>
+    <script type="text/javascript">
+        const my_canvas = document.getElementById('my_canvas');
+        const ctx = my_canvas.getContext('2d');
+
+        // gradiente del cielo
+        const skyGradient = ctx.createLinearGradient(0, 0, 0, my_canvas.height);
+        skyGradient.addColorStop(0, '#002f6c'); 
+        skyGradient.addColorStop(0.5, '#ff4500'); 
+        skyGradient.addColorStop(1, '#ffa07a'); 
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, my_canvas.width, my_canvas.height);
+
+        // sol
+        const sunX = my_canvas.width / 2;
+        const sunY = my_canvas.height * 0.75;
+        const sunRadius = 50;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffdf00'; 
+        ctx.fill();
+
+        // silueta de las montanas
+        ctx.beginPath();
+        ctx.moveTo(0, my_canvas.height);
+        ctx.lineTo(0, my_canvas.height * 0.75);
+        ctx.lineTo(my_canvas.width * 0.3, my_canvas.height * 0.65);
+        ctx.lineTo(my_canvas.width * 0.5, my_canvas.height * 0.8);
+        ctx.lineTo(my_canvas.width * 0.7, my_canvas.height * 0.65);
+        ctx.lineTo(my_canvas.width, my_canvas.height * 0.75);
+        ctx.lineTo(my_canvas.width, my_canvas.height);
+        ctx.closePath();
+        ctx.fillStyle = '#2f2f2f'; 
+        ctx.fill();
+
+        //arboles
+        const drawArbol = (x, y) => {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - 10, y + 20);
+            ctx.lineTo(x + 10, y + 20);
+            ctx.closePath();
+            ctx.fillStyle = '#234f16'; 
+            ctx.fill();
+        };
+
+        drawArbol(100, 335); 
+        drawArbol(130, 335);
+        drawArbol(170, 340);
+        drawArbol(220, 315);
+        drawArbol(250, 320);
+        drawArbol(500, 390); 
+        drawArbol(530, 365);
+        drawArbol(570, 375);
+        drawArbol(600, 365);
+        drawArbol(630, 365); 
+        drawArbol(390, 375);
+        drawArbol(420, 365);
+        drawArbol(460, 355);
+        drawArbol(490, 370);
+    </script>
+</body>
+</html>
