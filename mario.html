@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        canvas {
+            background-color: rgb(52, 225, 255);
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="my_canvas" width="750" height="500"></canvas>
+    <script type="text/javascript">
+        const my_canvas = document.getElementById('my_canvas');
+        const ctx = my_canvas.getContext('2d');
+
+
+        //bloques powerup
+
+        /*
+        ctx.fillStyle ='orange'
+        ctx.fillRect(50,200,45,45)
+        ctx.strokeRect(50,200,45,45)
+        
+        ctx.fillStyle ='orange'
+        ctx.fillRect(180,60,45,45)
+        ctx.strokeRect(180,60,45,45)
+        ctx.fillStyle ='orange'
+        ctx.fillRect(225,60,45,45)
+        ctx.strokeRect(225,60,45,45)
+
+        ctx.fillStyle ='orange'
+        ctx.fillRect(680,90,45,45)
+        ctx.strokeRect(680,90,45,45)
+        */
+        // para no tener que hacer cada punto manualmente 
+
+
+        const drawPowerUpBlock = (x, y) => {
+            const size = 45; 
+            const dotRadius = 3; 
+
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(x, y, size, size);
+            ctx.strokeRect(x, y, size, size);
+
+            ctx.fillStyle = 'black';
+
+            // arriba izquierda
+            ctx.beginPath();
+            ctx.arc(x + dotRadius, y + dotRadius, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // arriba derecha
+            ctx.beginPath();
+            ctx.arc(x + size - dotRadius, y + dotRadius, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // abajo izquierda
+            ctx.beginPath();
+            ctx.arc(x + dotRadius, y + size - dotRadius, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // abajo derecha
+            ctx.beginPath();
+            ctx.arc(x + size - dotRadius, y + size - dotRadius, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
+        drawPowerUpBlock(50, 200);
+        drawPowerUpBlock(180, 60);
+        drawPowerUpBlock(225, 60);
+        drawPowerUpBlock(680, 90);
+
+
+
+
+        //------bloques fondo-------
+
+        //tuercas de bloques
+
+            const drawTuerca = (x, y) => {
+            ctx.strokeStyle = '#black';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            ctx.stroke();
+        };
+
+   
+        drawTuerca(320, 170);
+
+
+        //azul
+        ctx.fillStyle ='#56a4dc'
+        ctx.fillRect(300,150,160,250)
+        ctx.strokeRect(300,150,160,250)
+        ctx.fillStyle ='black'
+        ctx.fillRect(460,180,30,220)
+
+        drawTuerca(320, 170);
+        drawTuerca(440, 170);
+        drawTuerca(440, 380);
+
+
+        //naranja
+        ctx.fillStyle ='#edb6b6'
+        ctx.fillRect(180,240,160,160)
+        ctx.strokeRect(180,240,160,160)
+        ctx.fillStyle ='black'
+        ctx.fillRect(340,270,30,130)
+
+        drawTuerca(200, 260);
+        drawTuerca(320, 260);
+        drawTuerca(200,380);
+        drawTuerca(320,380);
+
+
+        //verde
+        ctx.fillStyle ='#58e566'
+        ctx.fillRect(630,240,160,160)
+        ctx.strokeRect(630,240,160,160)
+
+        drawTuerca(650,380);
+        drawTuerca(650,260);
+
+        //-------------pipa---------
+
+        //parte abajo
+        ctx.fillStyle = '#3b8b45'; 
+        ctx.fillRect(520, 240, 20, 160);
+        ctx.fillStyle = '#4ba550'; 
+        ctx.fillRect(540, 240, 20, 160);
+        ctx.fillStyle = '#63c367';
+        ctx.fillRect(560, 240, 20, 160);
+        ctx.fillStyle = '#2b7b35'; 
+        ctx.fillRect(580, 240, 20, 160);
+
+        //parte arriba
+        ctx.strokeRect(520, 240, 80, 160);
+        ctx.fillStyle = '#3b8b45'; 
+        ctx.fillRect(510, 240, 25, 50);
+        ctx.fillStyle = '#4ba550'; 
+        ctx.fillRect(535, 240, 25, 50);
+        ctx.fillStyle = '#63c367'; 
+        ctx.fillRect(560, 240, 25, 50);
+        ctx.fillStyle = '#2b7b35'; 
+        ctx.fillRect(585, 240, 25, 50);
+        ctx.strokeRect(510, 240, 100, 50);
+
+
+
+
+        //------arbusto------
+
+        ctx.fillStyle ='#6cc971'
+  
+        ctx.beginPath();
+        ctx.ellipse(50, 390, 50, 30, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(50, 370, 30, 50, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+
+        //-----------piso-------------
+
+
+        const squareSize = 15;
+
+        const colors = ['#863d3d', '#b75515']; 
+        const rows = 5; 
+        const cols = my_canvas.width / squareSize; 
+
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                ctx.fillStyle = colors[(row + col) % 2]; 
+                ctx.fillRect(col * squareSize, 435 + row * squareSize, squareSize, squareSize);
+            }
+        }
+
+        
+
+        ctx.fillStyle ='black'
+        ctx.fillRect(0,400,750,5)
+        ctx.fillStyle ='#ea9f9f'
+        ctx.fillRect(0,405,750,13)
+        ctx.fillStyle ='#edd0d0'
+        ctx.fillRect(0,418,750,12)
+        ctx.fillStyle ='black'
+        ctx.fillRect(0,430,750,5)
+
+
+
+
+    </script>
+
+</body>
+</html>
