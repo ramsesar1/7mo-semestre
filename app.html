@@ -39,17 +39,16 @@
             return `rgb(${red},${green},${blue})`;
         }
 
-        // Color aleatorio 
         const playerColor = getRandomColour();
 
-        class rectangulo {
-            constructor(x, y, w, h, c, s) {
+        // Color aleatorio 
+        class Rectangulo {
+            constructor(x, y, w, h, c) {
                 this.x = x;
                 this.y = y;
                 this.w = w;
                 this.h = h;
                 this.c = c;
-                this.s = s;
             }
 
             draw() {
@@ -65,67 +64,79 @@
             }
         }
 
-        let randomRect = new rectangulo(
+        let randomRect = new Rectangulo(
             Math.random() * (my_canvas.width - 40),
             Math.random() * (my_canvas.height - 40),
             30,
             30,
-            getRandomColour(),
-            0
+            getRandomColour()
         );
 
-        let wall = new rectangulo(
-            150, 
-            150,
-            100,
-            10,
-            'gray',
-            0
-        );
+        let walls = [
+            new Rectangulo(150, 150, 100, 10, 'gray'),
+            new Rectangulo(300, 200, 150, 10, 'gray'),
+            new Rectangulo(100, 300, 200, 10, 'gray')
+        ];
 
         function update() {
             let next_x = s_x;
             let next_y = s_y;
+            const steps = Math.ceil(speed / 10); 
+            const stepSize = speed / steps;
 
-            switch(direction) {
-                case "up":
-                    next_y -= speed;
-                    if (next_y < -40) {
-                        next_y = 500;
-                    }
-                    break;
-                case "down":
-                    next_y += speed;
-                    if (next_y > 500) {
-                        next_y = -40;
-                    }
-                    break;
-                case "left":
-                    next_x -= speed;
-                    if (next_x < -40){
-                        next_x = 500;
-                    }
-                    break;
-                case "right":
-                    next_x += speed;
-                    if (next_x > 500){
-                        next_x = -40;
-                    }
-                    break;
-            }
+            for (let i = 0; i < steps; i++) {
+                switch(direction) {
+                    case "up":
+                        next_y -= stepSize;
+                        if (next_y < -40){
+                            next_y = 500;
+                        } 
+                        break;
+                    case "down":
+                        next_y += stepSize;
+                        if (next_y > 500) {
+                            next_y = -40;
+                        } 
+                        break;
+                    case "left":
+                        next_x -= stepSize;
+                        if (next_x < -40) {
+                            next_x = 500;
+                        }
+                        break;
+                    case "right":
+                        next_x += stepSize;
+                        if (next_x > 500) {
+                            next_x = -40;
+                        }
+                        break;
+                }
 
-            // colision con pared
-            const nextRect = new rectangulo(next_x, next_y, 40, 40, '', 0);
-            if(!wall.touching(nextRect)){
-                s_x = next_x;
-                s_y = next_y;
+                // colision con array de paredes
+                const nextRect = new Rectangulo(next_x, next_y, 40, 40, '');
+                let collision = false;
+
+                for (let wall of walls) {
+                    if (wall.touching(nextRect)) {
+                        collision = true;
+                        break;
+                    }
+                }
+
+                if (!collision) {
+                    s_x = next_x;
+                    s_y = next_y;
+                } else {
+                    break; 
+                }
             }
 
             // colision con cuadrado aleatorio
-            const movingRect = new rectangulo(s_x, s_y, 40, 40, '', 0);
+            const movingRect = new Rectangulo(s_x, s_y, 40, 40, '');
             if (randomRect.touching(movingRect)) {
                 randomRect.x = Math.random() * (my_canvas.width - 40);
                 randomRect.y = Math.random() * (my_canvas.height - 40);
+                randomRect.c = getRandomColour();  
             }
         }
 
@@ -137,7 +148,10 @@
 
             // dibujar rectangulo
             randomRect.draw();
-            wall.draw();
+
+            for (let wall of walls) {
+                wall.draw();
+            }
 
             update();
             requestAnimationFrame(pintar);
@@ -169,7 +183,6 @@
         });
 
         pintar();
-    
     /*
         document.addEventListener("keyup",function(e){
             
