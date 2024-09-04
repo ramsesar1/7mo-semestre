@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>loll</title>
+    <title>lol</title>
     <style>
         canvas {
             background-color: blueviolet;
@@ -26,10 +26,10 @@
     </style>
 </head>
 <body>
-
     <div id="speedLabel">Speed: 10</div>
     <div id="scoreLabel">Score: 0</div>
     <div id="pauseLabel" style="display: none;">Paused</div>
+
     <canvas id="my_canvas" width="500" height="500"></canvas>
 
     <script type="text/javascript">
@@ -52,7 +52,7 @@
             return `rgb(${red},${green},${blue})`;
         }
 
-        // Color aleatorio 
+        // Color aleatorio
         const playerColor = getRandomColour();
 
         class Rectangulo {
@@ -93,41 +93,40 @@
             new Rectangulo(250, 50, 200, 10, 'gray') 
         ];
 
+
         function update() {
             if (paused) return; // detener juego en pausa
 
             let next_x = s_x;
             let next_y = s_y;
-            const steps = Math.ceil(speed / 10);
-            const stepSize = speed / steps;
 
-            for (let i = 0; i < steps; i++) {
-                switch(direction) {
-                    case "up":
-                        next_y -= stepSize;
-                        if (next_y < -40){
-                            next_y = 500;
-                        } 
-                        break;
-                    case "down":
-                        next_y += stepSize;
-                        if (next_y > 500) {
-                            next_y = -40;
-                        } 
-                        break;
-                    case "left":
-                        next_x -= stepSize;
-                        if (next_x < -40) {
-                            next_x = 500;
-                        }
-                        break;
-                    case "right":
-                        next_x += stepSize;
-                        if (next_x > 500) {
-                            next_x = -40;
-                        }
-                        break;
-                }
+            switch(direction) {
+                case "up":
+                    next_y -= speed;
+                    if (next_y < -40){
+                        next_y = 500;
+                    } 
+                    break;
+                case "down":
+                    next_y += speed;
+                    if (next_y > 500){
+                        next_y = -40;
+                    }
+                    break;
+                case "left":
+                    next_x -= speed;
+                    if (next_x < -40){
+                        next_x = 500;
+                    } 
+                    break;
+                case "right":
+                    next_x += speed;
+                    if (next_x > 500){
+                        next_x = -40;
+                    } 
+                    break;
+            }
+
             // colision con array de paredes
             const nextRect = new Rectangulo(next_x, next_y, 40, 40, '');
             let collision = false;
@@ -136,15 +135,12 @@
                 if (wall.touching(nextRect)) {
                     collision = true;
                     break;
-                    }
                 }
+            }
 
-                if (!collision) {
-                    s_x = next_x;
-                    s_y = next_y;
-                } else {
-                    break;
-                }
+            if (!collision) {
+                s_x = next_x;
+                s_y = next_y;
             }
 
             // colision con cuadrado aleatorio
@@ -152,7 +148,6 @@
             if (randomRect.touching(movingRect)) {
                 randomRect.x = Math.random() * (my_canvas.width - 40);
                 randomRect.y = Math.random() * (my_canvas.height - 40);
-                randomRect.c = getRandomColour(); 
                 score += 1;  
                 scoreLabel.textContent = `Score: ${score}`;
             }
@@ -183,12 +178,11 @@
                 wall.draw();
             }
 
-            update();
-
             if (paused) {
-                drawPauseOverlay();
+                drawPauseOverlay();  
             }
 
+            update();
             requestAnimationFrame(pintar);
         }
 
@@ -207,13 +201,13 @@
                     direction = "right";
                     break;
                 case ' ':
-                    // incrementar velocidad
-                    if (paused) return; // detener aaumento de velocidad en pausa
+                    // Incrementar velocidad
+                    if (paused) return; // detener aumento de velocidad en pausa
                     speed += 2.5;
                     speedLabel.textContent = `Speed: ${speed}`;
                     break;
                 case 'p':
-                    paused = !paused; 
+                    paused = !paused;
                     pauseLabel.style.display = paused ? 'block' : 'none';
                     break;
                 default:
