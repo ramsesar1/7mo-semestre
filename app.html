@@ -61,36 +61,62 @@
             0
         );
 
+            let wall = new rectangulo(
+                150, 
+                150,
+                100,
+                10,
+                'gray',
+                0
+            );
+
 
         function update() {
+            let next_x = s_x;
+            let next_y = s_y;
+
+
             switch(direction) {
                 case "up":
-                    s_y -= 10;
-                    if (s_y < -40) {
-                        s_y = 500;
+                    next_y -= 10;
+                    if (next_y < -40) {
+                        next_y = 500;
                     }
                     break;
                 case "down":
-                    s_y += 10;
-                    if (s_y > 500) {
-                        s_y = -40;
+                    next_y += 10;
+                    if (next_y > 500) {
+                        next_y = -40;
                     }
                     break;
                 case "left":
-                    s_x -= 10;
-                    if (s_x < -40) {
-                        s_x = 500;
+                    next_x -= 10;
+                    if (next_x < -40){
+                        next_x = 500;
                     }
+
                     break;
                 case "right":
-                    s_x += 10;
-                    if (s_x > 500) {
-                        s_x = -40;
+                    next_x += 10;
+                    if (next_x > 500){
+                        next_x = -40;
                     }
                     break;
             }
 
-            // colision
+
+            //colision con pared
+
+            const nextRect = new rectangulo(next_x, next_y, 40, 40, '',0);
+            if(!wall.touching(nextRect)){
+                s_x = next_x;
+                s_y = next_y;
+            }
+        
+
+
+
+            // colision con cuadrado aleatorio
             const movingRect = new rectangulo(s_x, s_y, 40, 40, '', 0);
 
             if (randomRect.touching(movingRect)) {
@@ -106,8 +132,10 @@
             ctx.fillStyle = getRandomColour();
             ctx.fillRect(s_x, s_y, 40, 40);
 
-
+            //dibujar rectangulo
             randomRect.draw();
+
+            wall.draw();
 
             update();
             requestAnimationFrame(pintar);
