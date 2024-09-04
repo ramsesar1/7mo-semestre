@@ -8,19 +8,29 @@
         canvas {
             background-color: blueviolet;
         }
+        #speedLabel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 
+    <div id="speedLabel">Speed: 10</div>
     <canvas id="my_canvas" width="500" height="500"></canvas>
 
     <script type="text/javascript">
         const my_canvas = document.getElementById('my_canvas');
         const ctx = my_canvas.getContext('2d');
+        const speedLabel = document.getElementById('speedLabel');
 
         let direction = "";
         let s_x = 200, s_y = 200;
-
+        let speed = 10;
 
         function getRandomColour() {
             const red = Math.floor(Math.random() * 256);
@@ -28,6 +38,9 @@
             const blue = Math.floor(Math.random() * 256);
             return `rgb(${red},${green},${blue})`;
         }
+
+        // Color aleatorio 
+        const playerColor = getRandomColour();
 
         class rectangulo {
             constructor(x, y, w, h, c, s) {
@@ -52,7 +65,7 @@
             }
         }
 
-            let randomRect = new rectangulo(
+        let randomRect = new rectangulo(
             Math.random() * (my_canvas.width - 40),
             Math.random() * (my_canvas.height - 40),
             30,
@@ -61,64 +74,55 @@
             0
         );
 
-            let wall = new rectangulo(
-                150, 
-                150,
-                100,
-                10,
-                'gray',
-                0
-            );
-
+        let wall = new rectangulo(
+            150, 
+            150,
+            100,
+            10,
+            'gray',
+            0
+        );
 
         function update() {
             let next_x = s_x;
             let next_y = s_y;
 
-
             switch(direction) {
                 case "up":
-                    next_y -= 10;
+                    next_y -= speed;
                     if (next_y < -40) {
                         next_y = 500;
                     }
                     break;
                 case "down":
-                    next_y += 10;
+                    next_y += speed;
                     if (next_y > 500) {
                         next_y = -40;
                     }
                     break;
                 case "left":
-                    next_x -= 10;
+                    next_x -= speed;
                     if (next_x < -40){
                         next_x = 500;
                     }
-
                     break;
                 case "right":
-                    next_x += 10;
+                    next_x += speed;
                     if (next_x > 500){
                         next_x = -40;
                     }
                     break;
             }
 
-
-            //colision con pared
-
-            const nextRect = new rectangulo(next_x, next_y, 40, 40, '',0);
+            // colision con pared
+            const nextRect = new rectangulo(next_x, next_y, 40, 40, '', 0);
             if(!wall.touching(nextRect)){
                 s_x = next_x;
                 s_y = next_y;
             }
-        
-
-
 
             // colision con cuadrado aleatorio
             const movingRect = new rectangulo(s_x, s_y, 40, 40, '', 0);
-
             if (randomRect.touching(movingRect)) {
                 randomRect.x = Math.random() * (my_canvas.width - 40);
                 randomRect.y = Math.random() * (my_canvas.height - 40);
@@ -128,13 +132,11 @@
         function pintar() {
             ctx.clearRect(0, 0, my_canvas.width, my_canvas.height);
 
-            
-            ctx.fillStyle = getRandomColour();
+            ctx.fillStyle = playerColor;
             ctx.fillRect(s_x, s_y, 40, 40);
 
-            //dibujar rectangulo
+            // dibujar rectangulo
             randomRect.draw();
-
             wall.draw();
 
             update();
@@ -154,6 +156,11 @@
                     break;
                 case 'd':
                     direction = "right";
+                    break;
+                case ' ':
+                    // incremento velocidad
+                    speed += 2.5;
+                    speedLabel.textContent = `Speed: ${speed}`;
                     break;
                 default:
                     direction = ""; 
