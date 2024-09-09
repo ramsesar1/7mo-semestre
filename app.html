@@ -47,6 +47,9 @@
 
         const audio = new Audio("whatsapp.mp3");
 
+        const hitEnemy = new Audio("coin.mp3")
+        hitEnemy.load();
+
         const playerImage = new Image();
         playerImage.src = "m.jpg";
 
@@ -160,8 +163,13 @@
                 randomRect.c = getRandomColour();
                 score += 1;  
                 scoreLabel.textContent = `Score: ${score}`;
+                hitEnemy.play();
+
+
+
             }
         }
+    
 
         function drawPauseOverlay() {
             //  cuadro sobre canvas gris
