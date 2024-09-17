@@ -1,0 +1,26 @@
+[    
+        {
+            "username": "John",            
+            "email": "Johnsmiwth@fakeemail.com",
+            "password": "12345"
+        },
+    
+        {
+            "username": "Clayton",            
+            "email": "clayton12w34@fakeemail.com",
+            "password": "Adbcdf22"
+        },
+    
+        {
+            "username": "Didad",
+            "email": "din2w243@gmail.com",
+            "password": "Adbcdf22"
+        },
+    
+        {
+            "username": "Mary",
+            "email": "thisiwsnotreal@google.com",
+            "password": "adbcdf22"
+        }  
+ 
+]

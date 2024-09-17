@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suma</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+  <div id="app">
+    <label>{{ saludo }}</label><br><br>
+    
+    <input type="text" v-model="name" placeholder="Ingresa tu nombre"><br><br>
+    <input type="text" v-model="rol" placeholder="Ingresa tu rol"><br><br>
+    <input type="number" v-model.number="numero1" placeholder="Ingresa el primer número"><br><br>
+    <input type="number" v-model.number="numero2" placeholder="Ingresa el segundo número"><br><br>
+
+    <button @click="realizarSuma">Sumar</button><br><br>
+    <button @click="addUser">Añadir usuario</button><br><br>
+   
+   
+    <fieldset>
+    <form>
+
+
+    </fieldset>
+    <fieldset>
+
+    </fieldset>
+    <button type="submit">
+      Acceder
+    </button>
+  </form>
+    <label>Resultado: {{ resultado }}</label>
+
+      <li v-for="(user,index) in users">
+        {{ user.name }} {{ user.rol }} 
+      </li>
+
+  </div>
+
+  <script>
+
+    new Vue({
+      el: '#app',
+      data: {
+        name: '',
+        rol: '',
+        numero1: 0,
+        numero2: 0,
+        resultado: 0,
+        users: []
+      },
+
+      computed: {
+        saludo() {
+          return `Hola ${this.name}`;
+        }
+      },
+      methods: {
+        realizarSuma() {
+          this.resultado = this.numero1 + this.numero2;
+        },
+        addUser()
+        {
+          let temporal = {
+            "name":this.name,
+            "rol":this.rol
+          };
+          this.users.push(temporal);
+          this.name = '';
+          this.rol = '';
+        }
+      }
+
+    });
+  </script>
+</body>
+</html>
