@@ -23,7 +23,29 @@
         <div v-if="message" :style="{color: messageColor}">
             {{ message }}
         </div>
+
+    <div v-if="isLoggedIn">
+      <h2>Lista de usuarios</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Nombre de usuario</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.username">
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+
+
+
+
 
     <script>
     new Vue({
@@ -32,7 +54,9 @@
             username: '',
             password: '',
             message: '',
-            messageColor: ''
+            messageColor: '',
+            isLoggedIn: false,
+            users: []
         },
         methods: {
             async handleLogin() {
@@ -48,6 +72,10 @@
                         this.message = 'Login exitoso';
                         this.messageColor = 'green';
                         this.isLoggedIn = true;
+
+                        sessionStorage.setItem('loggedInUser', this.username);
+                        this.users = users;
+
                     } else {
                         this.message = 'nombre o contraseña invalidos';
                         this.messageColor = 'red';
@@ -58,6 +86,21 @@
                     this.messageColor = 'red';
                 }
             }
+        },
+        mounted(){
+          const loggedInUser = sessionStorage.getItem('loggedInUser');
+          if(loggedInUser){
+            this.isLoggedIn = true;
+            this.message = 'Bienvenido, ${loggedInUser}';
+            this.messageColor = 'green';
+
+            fetch('users.json')
+              .then(response => response.json())
+              .then(data =>{
+                this.users = data;
+              })
+              .catch(error => console.error('Error procesando fetch a users.json', error));
+          }
         }
     });
     </script>
