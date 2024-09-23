@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
+
     <div id="app">
         <h1>Inicio de sesión</h1>
         <fieldset v-if="!isLoggedIn">
@@ -25,137 +26,147 @@
         </div>
 
     <div v-if="isLoggedIn">
-        <form>
-            <h3>Añadir nuevo usuario</h3>
-            <label for="newUsername">Nombre de usuario: </label>
-            <input type="text" v-model="newUser.username" required>
-            <br>
-            <label for="newEmail">Emal: </label>
-            <input type="text" v-model="newUser.email" required>
-            <br>
-            <label for="newPassword">Contraseña</label>
-            <input type="password" v-model="newUser.password">
-            <br>
-            <button type="submit">Añadir usuario</button>
-        </form>
+        <button v-if="!isAddingUser" @click="toggleAddUser">Añadir nuevo usuario</button>
+
+        <fieldset v-if="isAddingUser">
+            <form @submit.prevent="addUser">
+                <h3>Añadir nuevo usuario</h3>
+                <label for="newUsername">Nombre de usuario: </label>
+                <input type="text" v-model="newUser.username" required>
+                <br>
+                <label for="newEmail">Emal: </label>
+                <input type="text" v-model="newUser.email" required>
+                <br>
+                <label for="newPassword">Contraseña</label>
+                <input type="password" v-model="newUser.password">
+                <br>
+                <button type="submit">Añadir usuario</button>
+                <button type="button" @click="toggleAddUser">Volver</button>
+            </form>
+        </fieldset>
 
 
-      <h2>Lista de usuarios</h2>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Nombre de usuario</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(user, index) in users" :key="user.username">
+        <h2 v-if="!isAddingUser">Lista de usuarios</h2>
+        <table v-if="!isAddingUser" border="1">
+            <thead>
+                <tr>
+                    <th>Nombre de usuario</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in users" :key="user.username">
+                    <td>
+                    <span v-if="!user.isEditing">{{user.username}}</span>
+                    <input v-else type="text" v-model="user.username">
+                </td>
                 <td>
-                <span v-if="!user.isEditing">{{user.username}}</span>
-                <input v-else type="text" v-model="user.username">
-            </td>
-            <td>
-                <span v-if="!user.isEditing">{{user.email}}</span>
-                <input v-else type="email" v-model="user.email">
-            </td>
-            <td>
-                <button @click="editUser(index)" v-if="!user.isEditing">Editar</button>
-                <button @click="saveUser(index)" v-if="user.isEditing">Guardar</button>
-                <button @click="deleteUser(index)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                    <span v-if="!user.isEditing">{{user.email}}</span>
+                    <input v-else type="email" v-model="user.email">
+                </td>
+                <td>
+                    <button @click="editUser(index)" v-if="!user.isEditing">Editar</button>
+                    <button @click="saveUser(index)" v-if="user.isEditing">Guardar</button>
+                    <button @click="deleteUser(index)">Eliminar</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
     </div>
-  </div>
 
 
 
 
 
     <script>
-    new Vue({
-        el: '#app',
-        data: {
-            username: '',
-            password: '',
-            message: '',
-            messageColor: '',
-            isLoggedIn: false,
-            users: [],
-            newUser: {username:'', email:'',password:'' }
-        },
-        methods: {
-            async handleLogin() {
-                try {
-                    const response = await fetch('users.json');
-                    const users = await response.json();
+        new Vue({
+            el: '#app',
+            data: {
+                username: '',
+                password: '',
+                message: '',
+                messageColor: '',
+                isLoggedIn: false,
+                isAddingUser: false,
+                users: [],
+                newUser: {username:'', email:'',password:'' }
+            },
+            methods: {
+                async handleLogin() {
+                    try {
+                        const response = await fetch('users.json');
+                        const users = await response.json();
 
-                    const validUser = users.some(user => 
-                        user.username === this.username && user.password === this.password
-                    );
+                        const validUser = users.some(user => 
+                            user.username === this.username && user.password === this.password
+                        );
 
-                    if (validUser) {
-                        this.message = 'Login exitoso';
-                        this.messageColor = 'green';
-                        this.isLoggedIn = true;
+                        if (validUser) {
+                            this.message = 'Login exitoso';
+                            this.messageColor = 'green';
+                            this.isLoggedIn = true;
 
-                        sessionStorage.setItem('loggedInUser', this.username);
-                        this.users = users.map(user => ({ ...user, isEditing: false })); 
-                    } else {
-                        this.message = 'Nombre o contraseña inválidos';
+                            sessionStorage.setItem('loggedInUser', this.username);
+                            this.users = users.map(user => ({ ...user, isEditing: false })); 
+                        } else {
+                            this.message = 'Nombre o contraseña inválidos';
+                            this.messageColor = 'red';
+                        }
+                    } catch (error) {
+                        console.error('Error procesando fetch a users.json', error);
+                        this.message = 'Ocurrió un error, inténtelo de nuevo';
                         this.messageColor = 'red';
                     }
-                } catch (error) {
-                    console.error('Error procesando fetch a users.json', error);
-                    this.message = 'Ocurrió un error, inténtelo de nuevo';
-                    this.messageColor = 'red';
+                },
+
+                addUser(){
+                    if(this.newUser.username && this.newUser.email && this.newUser.password) {
+                        this.users.push({
+                            username: this.newUser.username,
+                            email: this.newUser.email,
+                            password: this.newUser.password,
+                            isEditing: false
+                        });
+
+                        this.newUser.username = '';
+                        this.newUser.email = '';
+                        this.newUser.password = '';
+                        this.isAddingUser = false;
+                    }
+                },
+                toggleAddUser(){
+                    this.isAddingUser = !this.isAddingUser;
+                },
+
+                editUser(index){
+                    this.users[index].isEditing = true;
+                },
+                saveUser(index){
+                    this.users[index].isEditing = false;
+                },
+                deleteUser(index){
+                    this.users.splice(index,1);
                 }
+                
             },
 
-            addUser(){
-                if(this.newUser.username && this.newUser.email && this.newUser.password) {
-                    this.users.push({
-                        username: this.newUser.username,
-                        email: this.newUser.email,
-                        password: this.newUser.password,
-                        isEditing: false
-                    });
+            mounted(){
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if(loggedInUser){
+                this.isLoggedIn = true;
+                this.message = 'Bienvenido, ${loggedInUser}';
+                this.messageColor = 'green';
 
-                    this.newUser.username = '';
-                    this.newUser.email = '';
-                    this.newUser.password = '';
-                }
-            },
-
-            editUser(index){
-                this.users[index].isEditing = true;
-            },
-            saveUser(index){
-                this.users[index].isEditing = false;
-            },
-            deleteUser(index){
-                this.users.splice(index,1);
+                fetch('users.json')
+                .then(response => response.json())
+                .then(data =>{
+                    this.users = data.map(user => ({ ...user, isEditing: false }));
+                })
+                .catch(error => console.error('Error procesando fetch a users.json', error));
             }
-            
-        },
-
-        mounted(){
-          const loggedInUser = sessionStorage.getItem('loggedInUser');
-          if(loggedInUser){
-            this.isLoggedIn = true;
-            this.message = 'Bienvenido, ${loggedInUser}';
-            this.messageColor = 'green';
-
-            fetch('users.json')
-              .then(response => response.json())
-              .then(data =>{
-                this.users = data.map(user => ({ ...user, isEditing: false }));
-            })
-              .catch(error => console.error('Error procesando fetch a users.json', error));
-          }
-        }
-    });
+            }
+        });
     </script>
 </body>
 </html>
