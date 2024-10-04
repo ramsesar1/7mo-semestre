@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de acceso</title>
+    <link rel="stylesheet" href="less.css">
+</head>
+<body>
+    <form>
+        <fieldset>
+            <legend>Formulario de acceso</legend>
+            <label for="email">Correo electrónico</label>
+            <input type="text" id="email" name="email"><br><br>
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password">
+        </fieldset>
+        <fieldset>
+            <legend>Seleccione un rol:</legend>
+            <ul>
+                <li><input type="checkbox" name="roles[]" value="admin"> <span class="admin">Administrador</span></li>
+                <li><input type="checkbox" name="roles[]" value="gerente"> <span class="gerente">Gerente</span></li>
+                <li><input type="checkbox" name="roles[]" value="propietario"> <span class="propietario">Propietario</span></li>
+                <li><input type="checkbox" name="roles[]" value="agente"> <span class="agente">Agente de ventas</span></li>
+                <li><input type="checkbox" name="roles[]" value="prospecto"> <span class="prospecto">Prospecto</span></li>
+            </ul>
+        </fieldset>
+        <button type="submit">Acceder</button>
+        <a href="#">¿Olvidó su contraseña?</a>
+    </form>
+</body>
+</html>

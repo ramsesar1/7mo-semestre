@@ -1,0 +1,79 @@
+@color1: #1E90FF; 
+@color2: #32CD32; 
+@color3: #ADD8E6;
+@color4: #FFA500; 
+@color5: #FF4500; 
+@fieldset-border: 1px solid #000; 
+
+form {
+    background-color: #d5a6e6;
+    padding: 20px;
+    border: 3px solid #666;
+    
+    fieldset {
+        margin-bottom: 10px;
+        border: @fieldset-border;
+        padding: 10px;
+    }
+}
+
+h1 {
+    color: limegreen;
+}
+
+label {
+    color: green;
+    font-weight: normal; 
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;  
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+span {
+    display: inline-block;
+    width: calc(100% - 30px);  
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    color: black;
+}
+
+span.admin {
+    background-color: @color1;
+}
+
+span.gerente {
+    background-color: @color2;
+}
+
+span.propietario {
+    background-color: @color3;
+}
+
+span.agente {
+    background-color: @color4;
+}
+
+span.prospecto {
+    background-color: @color5;
+}
+
+button {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
