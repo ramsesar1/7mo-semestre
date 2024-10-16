@@ -61,18 +61,40 @@
           </form>
         </div>
       </nav>
+      <?php
+     include 'App/ProductController.php';  
 
+      if (isset($_GET['slug'])) {
+          $slug = $_GET['slug'];
+          $productDetails = $controller->getProductBySlug($slug);
+          
+          if ($productDetails) {
+
+            $name = $product->name; 
+            $image = $product->cover; 
+            $description = $product->description; 
+
+              $controller = new ProductController();
+              $products = $controller->getProducts($_SESSION['api_token']);  
+            }
+          } else {
+              echo "No product slug provided.";
+          }
+      ?>
+      
       <h1>Detalle del Producto</h1>
+      
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Producto">
+            <img src="<?php echo $image; ?>" class="img-fluid rounded-start" alt="Producto">
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Nombre del Producto</h5>
+
+              <h5 class="card-title"><?php echo $name; ?></h5>
               <p class="card-text">$100.00 MXN</p>
-              <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa veritatis voluptate hic, quasi eum velit odit molestiae neque soluta, sapiente at enim odio optio earum quidem a quae, nulla sit!</p>
+              <p class="card-text"><?php echo $description; ?></p>
               <button class="btn btn-primary">Comprar ahora</button>
               <button class="btn btn-secondary">Añadir al carrito</button>
             </div>
