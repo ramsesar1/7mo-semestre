@@ -35,10 +35,8 @@
     <h4 class="text-light">Sidebar</h4>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
-          Home
-        </a>
-      </li>
+        <a href="#" class="nav-link active" aria-current="page">Home</a>
+        </li>
       <li>
         <a href="#" class="nav-link">Dashboard</a>
       </li>
@@ -107,39 +105,43 @@
 
     <!-- Tarjetas de los prodcutos -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="Details.html" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="Details.html" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="Details.html" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <?php
+      include 'App/ProductController.php';  
+      
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+      if (session_status() === PHP_SESSION_NONE) {
+        session_start();  
+        }
+      
+        if (!isset($_SESSION['api_token'])) {
+            echo "Necesita iniciar sesion para ver los productos";
+            exit();
+        }
+      
+        $controller = new ProductController();
+        $products = $controller->getProducts($_SESSION['api_token']);  
+      
+        foreach ($products as $product) {
+            $name = $product->name; 
+            $image = $product->cover; 
+            $description = $product->description; 
+        ?>
+        <div class="col">
+          <div class="card h-100">
+            <img src="<?php echo $image; ?>" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $name; ?></h5>
+              <p class="card-text"><?php echo $description; ?></p>
+              <a href="Details.html" class="btn btn-primary">Ver detalles</a>
+            </div>
+          </div>
+        </div>
+        <?php
+      }
+      ?>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </div>
 </body>
 </html>
