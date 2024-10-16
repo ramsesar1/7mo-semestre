@@ -38,14 +38,15 @@ class AuthController {
 
         $response = json_decode($response);
 
-        if (isset($response->data->name)) {
+        if (isset($response->data->token)) {
             $_SESSION['user_data'] = $response->data;
             $_SESSION['user_id'] = $response->data->id;
+            $_SESSION['api_token'] = $response->data->token;
 
             header('Location: /AppPHP/Productos.php');
             exit();  
         } else {
-            echo "Invalid credentials. Please try again.";
+            echo "Credenciales invalidas, intente de nuevo";
         }
     }
 }
