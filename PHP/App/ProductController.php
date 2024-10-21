@@ -36,15 +36,13 @@ class ProductController {
       }
   }
 
-  function getDetails() {
-
+  public function getProductBySlug($slug) {
     if (!isset($_SESSION['api_token'])) {
         echo "User not authenticated. Please log in.";
         return;
     }
 
         $curl = curl_init();
-
         $url = 'https://crud.jonathansoto.mx/api/products/' . urlencode($slug);
 
         curl_setopt_array($curl, array(
@@ -65,6 +63,7 @@ class ProductController {
         curl_close($curl);
 
         $response = json_decode($response);
+    //    var_dump($response);
 
         if (isset($response->data)) {
             return $response->data; 
@@ -73,4 +72,3 @@ class ProductController {
         }
     }
 }
-

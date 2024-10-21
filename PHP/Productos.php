@@ -125,6 +125,8 @@
             $name = $product->name; 
             $image = $product->cover; 
             $description = $product->description; 
+            $id = $product->id; 
+
 
         ?>
         <div class="col">
@@ -133,9 +135,8 @@
             <div class="card-body">
               <h5 class="card-title"><?php echo $name; ?></h5>
               <p class="card-text"><?php echo $description; ?></p>
-              <a href="Details.php" class="btn btn-primary" data-slug="<?php echo urlencode($slug); ?>" onclick="verDetalles(event)">Ver detalles</a>
-
-            </div>
+              <a href="Details.php?slug=<?php echo urlencode($product->slug); ?>&id=<?php echo $id; ?>" class="btn btn-primary">Ver detalles</a>
+              </div>
           </div>
         </div>
         <?php
