@@ -6,8 +6,14 @@ if (!isset($_SESSION['api_token'])) {
     exit();
 }
 
+
 $controller = new ProductController();
 $products = $controller->getProducts($_SESSION['api_token']);  
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+  $controller->addProduct();
+}
 ?>
 
 <!DOCTYPE html>
@@ -118,28 +124,28 @@ $products = $controller->getProducts($_SESSION['api_token']);
       </div>
     </nav>
 
-    <h3>Add Product</h3>
-    <button id="toggleFormButton" class="btn btn-primary mb-3">Add Product</button>
-    
-    <div id="addProductForm" class="hidden">
-      <form action="add_product.php" method="POST" class="mb-4">
-        <div class="mb-3">
-          <label for="productName" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="productName" name="name" required>
-        </div>
-        <div class="mb-3">
-          <label for="productDescription" class="form-label">Product Description</label>
-          <textarea class="form-control" id="productDescription" name="description" required></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="productImage" class="form-label">Product Image URL</label>
-          <input type="url" class="form-control" id="productImage" name="cover" required>
-        </div>
-        <button type="submit" class="btn btn-success">Confirm Add Product</button>
-        <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
-      </form>
+    <div class="content">
+      <h3>Add Product</h3>
+      <button id="toggleFormButton" class="btn btn-primary mb-3">Add Product</button>
+
+      <div id="addProductForm" class="hidden">
+      <form id="newProductForm" class="mb-4" action="" method="POST">
+      <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="productDescription" class="form-label">Product Description</label>
+            <textarea class="form-control" id="productDescription" name="description" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-success">Confirm Add Product</button>
+          <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+        </form>
+      </div>
     </div>
 
+    
     <!-- Editar producto -->
     <div id="editProductForm" class="hidden">
       <form action="edit_product.php" method="POST" class="mb-4">
