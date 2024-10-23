@@ -109,8 +109,7 @@
             </div>
         </div>
 
-
-      <div class="card">
+        <div class="card">
         <div class="card-body">
           <h5 class="card-title">Historial de pedidos</h5>
           <table class="table">
@@ -147,5 +146,5 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
 </html>

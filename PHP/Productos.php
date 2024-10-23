@@ -1,4 +1,5 @@
 <?php
+
 include 'App/ProductController.php';  
 
 if (!isset($_SESSION['api_token'])) {
@@ -129,8 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
       <button id="toggleFormButton" class="btn btn-primary mb-3">Add Product</button>
 
       <div id="addProductForm" class="hidden">
-      <form id="newProductForm" class="mb-4" action="" method="POST">
-      <div class="mb-3">
+        <form action="add_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
+          <div class="mb-3">
             <label for="productName" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="productName" name="name" required>
           </div>
@@ -138,7 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <label for="productDescription" class="form-label">Product Description</label>
             <textarea class="form-control" id="productDescription" name="description" required></textarea>
           </div>
-
+          <div class="mb-3">
+            <label for="cover" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="cover" name="cover" required>
+          </div>
           <button type="submit" class="btn btn-success">Confirm Add Product</button>
           <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
         </form>
@@ -148,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     
     <!-- Editar producto -->
     <div id="editProductForm" class="hidden">
-      <form action="edit_product.php" method="POST" class="mb-4">
+      <form action="edit_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
         <input type="hidden" id="editProductId" name="id">
         <div class="mb-3">
           <label for="editProductName" class="form-label">Product Name</label>
@@ -159,14 +163,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
           <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
         </div>
         <div class="mb-3">
-          <label for="editProductImage" class="form-label">Product Image URL</label>
-          <input type="url" class="form-control" id="editProductImage" name="cover" required>
+          <label for="editProductImage" class="form-label">Current Image</label>
+          <img id="currentProductImage" src="" alt="Current Product Image" class="img-thumbnail mb-2" style="max-width: 200px;">
+          <input type="file" class="form-control" id="editProductImage" name="cover" accept="image/*">
+          <small class="form-text text-muted">Leave empty to keep current image</small>
         </div>
         <button type="submit" class="btn btn-warning">Confirm Edit</button>
         <button type="button" id="cancelEditButton" class="btn btn-secondary">Cancel</button>
       </form>
     </div>
-    
     <!-- Tarjetas de los productos -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <?php
@@ -213,19 +218,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
       document.querySelectorAll('.editButton').forEach(button => {
         button.addEventListener('click', function() {
-          var id = this.dataset.id;
-          var name = this.dataset.name;
-          var description = this.dataset.description;
-          var image = this.dataset.image;
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const description = this.dataset.description;
+            const image = this.dataset.image;
 
-          document.getElementById('editProductId').value = id;
-          document.getElementById('editProductName').value = name;
-          document.getElementById('editProductDescription').value = description;
-          document.getElementById('editProductImage').value = image;
+            document.getElementById('editProductId').value = id;
+            document.getElementById('editProductName').value = name;
+            document.getElementById('editProductDescription').value = description;
+            
+            const currentImageElem = document.getElementById('currentProductImage');
+            currentImageElem.src = image;
+            currentImageElem.style.display = 'block';
 
-          document.getElementById('editProductForm').classList.remove('hidden');
+            document.getElementById('editProductForm').classList.remove('hidden');
         });
-      });
+    });
+
+    document.getElementById('editProductImage').addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('currentProductImage').src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
     </script>
   </div>
 </body>
