@@ -1,6 +1,7 @@
 <?php
 
 include 'App/ProductController.php';  
+include 'App/BrandController.php';
 
 if (!isset($_SESSION['api_token'])) {
     header("Location: index.php");
@@ -9,8 +10,9 @@ if (!isset($_SESSION['api_token'])) {
 
 
 $controller = new ProductController();
+$brandController = new BrandController(); 
 $products = $controller->getProducts($_SESSION['api_token']);  
-
+$brands = $brandController->get();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
   $controller->addProduct();
@@ -126,11 +128,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     </nav>
 
     <div class="content">
+    <?php if (isset($_SESSION['error_message'])): ?>
+          <div class="alert alert-danger">
+              <?php 
+              echo $_SESSION['error_message'];
+              unset($_SESSION['error_message']);
+              ?>
+          </div>
+      <?php endif; ?>
+
+      <?php if (isset($_SESSION['success_message'])): ?>
+          <div class="alert alert-success">
+              <?php 
+              echo $_SESSION['success_message'];
+              unset($_SESSION['success_message']);
+              ?>
+          </div>
+      <?php endif; ?>
       <h3>Add Product</h3>
       <button id="toggleFormButton" class="btn btn-primary mb-3">Add Product</button>
 
       <div id="addProductForm" class="hidden">
-        <form action="add_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
+          <form action="add_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
           <div class="mb-3">
             <label for="productName" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="productName" name="name" required>
@@ -138,6 +157,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
           <div class="mb-3">
             <label for="productDescription" class="form-label">Product Description</label>
             <textarea class="form-control" id="productDescription" name="description" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="brandSelector" class="form-label">Select Brand</label>
+            <?php if (isset($brands) && sizeof($brands)): ?>
+              <select class="form-control" name="brand_id" id="brandSelector">
+                <?php foreach ($brands as $brand) : ?>
+                  <option value="<?= $brand->id ?>"><?= $brand->name ?></option>
+                <?php endforeach; ?>
+              </select>
+            <?php else: ?>
+              <p>No brands available.</p>
+            <?php endif; ?>
           </div>
           <div class="mb-3">
             <label for="cover" class="form-label">Product Image</label>
@@ -148,30 +179,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         </form>
       </div>
     </div>
-
     
     <!-- Editar producto -->
     <div id="editProductForm" class="hidden">
-      <form action="edit_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
-        <input type="hidden" id="editProductId" name="id">
-        <div class="mb-3">
-          <label for="editProductName" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="editProductName" name="name" required>
-        </div>
-        <div class="mb-3">
-          <label for="editProductDescription" class="form-label">Product Description</label>
-          <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="editProductImage" class="form-label">Current Image</label>
-          <img id="currentProductImage" src="" alt="Current Product Image" class="img-thumbnail mb-2" style="max-width: 200px;">
-          <input type="file" class="form-control" id="editProductImage" name="cover" accept="image/*">
-          <small class="form-text text-muted">Leave empty to keep current image</small>
-        </div>
-        <button type="submit" class="btn btn-warning">Confirm Edit</button>
-        <button type="button" id="cancelEditButton" class="btn btn-secondary">Cancel</button>
-      </form>
-    </div>
+        <form action="edit_product.php" method="POST" enctype="multipart/form-data" class="mb-4">
+          <input type="hidden" id="editProductId" name="id">
+          <div class="mb-3">
+            <label for="editProductName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="editProductName" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="editProductDescription" class="form-label">Product Description</label>
+            <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="editBrandSelector" class="form-label">Select Brand</label>
+            <select class="form-control" name="brand_id" id="editBrandSelector">
+              <?php foreach ($brands as $brand) : ?>
+                <option value="<?= $brand->id ?>"><?= $brand->name ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="editProductImage" class="form-label">Current Image</label>
+            <img id="currentProductImage" src="" alt="Current Product Image" class="img-thumbnail mb-2" style="max-width: 200px;">
+            <input type="file" class="form-control" id="editProductImage" name="cover" accept="image/*">
+            <small class="form-text text-muted">Leave empty to keep current image</small>
+          </div>
+          <button type="submit" class="btn btn-warning">Confirm Edit</button>
+          <button type="button" id="cancelEditButton" class="btn btn-secondary">Cancel</button>
+        </form>
+      </div>
+
+
+
     <!-- Tarjetas de los productos -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <?php
@@ -179,6 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
           $name = $product->name; 
           $image = $product->cover; 
           $description = $product->description; 
+          $brand = $product->brand; 
           $id = $product->id; 
       ?>
       <div class="col">
@@ -186,12 +228,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
           <img src="<?php echo $image; ?>" class="card-img-top" alt="Product Image">
           <div class="card-body">
             <h5 class="card-title"><?php echo $name; ?></h5>
+            <h6 class="card-subtitle text-muted"><?php echo $brand->name; ?></h6>
+
             <p class="card-text"><?php echo $description; ?></p>
             <a href="Details.php?slug=<?php echo urlencode($product->slug); ?>&id=<?php echo $id; ?>" class="btn btn-primary">View Details</a>
             <button class="btn btn-warning editButton" data-id="<?php echo $id; ?>" data-name="<?php echo $name; ?>" data-description="<?php echo $description; ?>" data-image="<?php echo $image; ?>">Edit</button>
             <form action="delete_product.php" method="POST" style="display:inline;">
-              <input type="hidden" name="id" value="<?php echo $id; ?>">
-              <button type="submit" class="btn btn-danger">Delete</button>
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <button type="submit" class="btn btn-danger">Delete</button>
             </form>
           </div>
         </div>
@@ -222,10 +266,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             const name = this.dataset.name;
             const description = this.dataset.description;
             const image = this.dataset.image;
+            const brandId = this.dataset.brand;
+
 
             document.getElementById('editProductId').value = id;
             document.getElementById('editProductName').value = name;
             document.getElementById('editProductDescription').value = description;
+            document.getElementById('editBrandSelector').value = brandId;
+
             
             const currentImageElem = document.getElementById('currentProductImage');
             currentImageElem.src = image;
