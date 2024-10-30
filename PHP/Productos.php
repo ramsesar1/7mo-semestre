@@ -1,11 +1,15 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'App/ProductController.php';  
 include 'App/BrandController.php';
 
 if (!isset($_SESSION['api_token'])) {
-    header("Location: index.php");
-    exit();
+  header("Location: /AppPHP/index");
+  exit();
 }
 
 
@@ -231,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <h6 class="card-subtitle text-muted"><?php echo $brand->name; ?></h6>
 
             <p class="card-text"><?php echo $description; ?></p>
-            <a href="Details.php?slug=<?php echo urlencode($product->slug); ?>&id=<?php echo $id; ?>" class="btn btn-primary">View Details</a>
+            <a href="/AppPHP/product/[slug]=<?php echo urlencode($product->slug); ?>&id=<?php echo $id; ?>" class="btn btn-primary">View Details</a>
             <button class="btn btn-warning editButton" data-id="<?php echo $id; ?>" data-name="<?php echo $name; ?>" data-description="<?php echo $description; ?>" data-image="<?php echo $image; ?>">Edit</button>
             <form action="delete_product.php" method="POST" style="display:inline;">
             <input type="hidden" name="id" value="<?php echo $id; ?>">

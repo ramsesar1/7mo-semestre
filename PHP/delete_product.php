@@ -19,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         $_SESSION['error_message'] = "Failed to delete the product.";
     }
 
-    header('Location: Productos.php');
+    header('Location: /AppPHP/products');
     exit();
 } else {
     $_SESSION['error_message'] = "Invalid request.";
-    header('Location: Productos.php');
+    header('Location: /AppPHP/products');
     exit();
 }
 ?>

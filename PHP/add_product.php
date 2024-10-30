@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response = json_decode($response);
 
         if (isset($response->data)) {
-            header("Location: Productos.php");
+            header('Location: /AppPHP/products');
         } else {
             echo "Error: " . $response->message;
         }
@@ -60,5 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "All fields are required.";
     }
 } else {
-    header("Location: Productos.php");
+    header('Location: /AppPHP/products');
 }

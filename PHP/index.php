@@ -57,7 +57,8 @@
                         <img src="McDonalds-logo.png" alt="Logo" class="logo-image mb-2">
                         <h4>Sign into your account</h4>
                     </div>                        
-                    <form method="POST" action="app/AuthController.php">
+                    <form method="POST" action="/AppPHP/auth">
+
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>

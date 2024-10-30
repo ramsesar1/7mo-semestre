@@ -43,7 +43,7 @@ class AuthController {
             $_SESSION['user_id'] = $response->data->id;
             $_SESSION['api_token'] = $response->data->token;
 
-            header('Location: /AppPHP/Productos.php');
+            header('Location: /AppPHP/products');
             exit();  
         } else {
             echo "Credenciales invalidas, intente de nuevo";

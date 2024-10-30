@@ -1,0 +1,49 @@
+Options +FollowSymLinks
+
+RewriteEngine On
+
+RewriteBase /AppPHP/
+
+Options +FollowSymLinks -Indexes
+ServerSignature Off
+
+<FilesMatch "^.*Controller\.php$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Index
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^index/?$ index.php [L]
+
+# Productos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^products/?$ Productos.php [L]
+
+# Detalles de producto
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^product/([^/]+)/?$ Details.php?slug=$1 [L,QSA]
+
+# Controladores
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^auth/?$ app/AuthController.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^resources/?$ app/ProductController.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^Productresources/?$ app/ProductController.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^Brandresources/?$ app/BrandController.php [L]
+
+# Manejo de errores
+ErrorDocument 404 /AppPHP/error404.php
+ErrorDocument 403 /AppPHP/error403.php

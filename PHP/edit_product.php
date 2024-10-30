@@ -3,7 +3,7 @@ session_start();
 include 'App/ProductController.php';
 
 if (!isset($_SESSION['api_token'])) {
-    header("Location: index.php");
+    header("Location: /AppPHP/index");
     exit();
 }
 
@@ -20,5 +20,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-header("Location: Productos.php");
+header('Location: /AppPHP/products');
 exit();
